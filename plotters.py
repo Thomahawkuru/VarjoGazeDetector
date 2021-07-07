@@ -3,8 +3,8 @@ import numpy as np
 from scipy.stats import rayleigh
 from scipy.stats import norm
 
-def detection(x, y, t, v, Fixations, Saccades, Persuits, Blinks, trail, axs):
 
+def detection(x, y, t, v, fixations, saccades, persuits, blinks, trail, axs):
     axs1 = axs[trail - 1]
     axs1.set_title('Trail ' + str(trail))
     axs1.set_xlabel('Time [s]')
@@ -21,65 +21,65 @@ def detection(x, y, t, v, Fixations, Saccades, Persuits, Blinks, trail, axs):
     axs2.set_ylim([-22.5, 22.5])
     axs2.legend(["Horizontal", "Vertical"])
 
-    for i in range(len(Fixations)):
-        axs1.axvspan(Fixations[i, 0], Fixations[i, 1], color='g', alpha=.1)
-    for i in range(len(Saccades)):
-        axs1.axvspan(Saccades[i, 0], Saccades[i, 1], color='r', alpha=.1)
-    for i in range(len(Persuits)):
-        axs1.axvspan(Persuits[i, 0], Persuits[i, 1], color='y', alpha=.1)
-    for i in range(len(Blinks)):
-        axs1.axvspan(Blinks[i, 0], Blinks[i, 1], color='b', alpha=.1)
+    for i in range(len(fixations)):
+        axs1.axvspan(fixations[i, 0], fixations[i, 1], color='g', alpha=.1)
+    for i in range(len(saccades)):
+        axs1.axvspan(saccades[i, 0], saccades[i, 1], color='r', alpha=.1)
+    for i in range(len(persuits)):
+        axs1.axvspan(persuits[i, 0], persuits[i, 1], color='y', alpha=.1)
+    for i in range(len(blinks)):
+        axs1.axvspan(blinks[i, 0], blinks[i, 1], color='b', alpha=.1)
 
 
-
-def calculation(Fixations, Saccades, Persuits, Blinks, trail, participant):
-    plt.figure(trail+1, figsize=[25.60, 14.40])
+def calculation(fixations, saccades, persuits, blinks, trail, participant):
+    plt.figure(trail + 1, figsize=[25.60, 14.40])
     plt.subplot(4, 4, 1)
-    histogramreighley(Fixations[:, 2])
+    histogramreighley(fixations[:, 2])
     plt.title("Fixation duration")
     plt.xlabel('Time [s]')
 
     plt.subplot(4, 4, 5)
-    histogramreighley(Saccades[:, 2])
+    histogramreighley(saccades[:, 2])
     plt.title("Saccade duration")
     plt.xlabel('Time [s]')
     plt.subplot(4, 4, 6)
-    histogramreighley(Saccades[:, 7])
+    histogramreighley(saccades[:, 7])
     plt.title("Saccade amplitude")
     plt.xlabel('Amplitude [deg]')
     plt.subplot(4, 4, 7)
-    histogramreighley(Saccades[:, 8])
+    histogramreighley(saccades[:, 8])
     plt.title("Saccade mean velocity")
     plt.xlabel('Velocity [deg/s]')
     plt.subplot(4, 4, 8)
-    histogramreighley(Saccades[:, 9])
+    histogramreighley(saccades[:, 9])
     plt.title("Saccade max velocity")
     plt.xlabel('Velocity [deg/s]')
 
     plt.subplot(4, 4, 9)
-    histogramreighley(Persuits[:, 2])
+    histogramreighley(persuits[:, 2])
     plt.title("Persuit duration")
     plt.xlabel('Time [s]')
     plt.subplot(4, 4, 10)
-    histogramreighley(Persuits[:, 7])
+    histogramreighley(persuits[:, 7])
     plt.title("Persuit amplitude")
     plt.xlabel('Amplitude [deg]')
     plt.subplot(4, 4, 11)
     plt.xlabel('Amplitude [deg]')
-    histogramreighley(Persuits[:, 8])
+    histogramreighley(persuits[:, 8])
     plt.title("Persuit mean velocity")
     plt.xlabel('Velocity [deg/s]')
     plt.subplot(4, 4, 12)
-    histogramreighley(Persuits[:, 9])
+    histogramreighley(persuits[:, 9])
     plt.title("Persuit max velocity")
     plt.xlabel('Velocity [deg/s]')
 
     plt.subplot(4, 4, 13)
-    histogramreighley(Blinks[:, 2])
+    histogramreighley(blinks[:, 2])
     plt.title("Blink duration")
     plt.xlabel('Time [s]')
 
     plt.tight_layout()
+
 
 def histogramreighley(data):
     N = len(data)
@@ -96,10 +96,11 @@ def histogramreighley(data):
 
     plt.plot(x, rayleigh(loc=0, scale=scale).pdf(x) * len(V_norm_hist) * binwidth, lw=5, alpha=0.6,
              label=f'Rayleigh pdf (s={scale:.3f})')
-    plt.axvline(data.mean(), color='red', lw=5, alpha=0.6, label='Mean = ' + str(data.mean()))
+    plt.axvline(data.mean(), color='red', lw=3, alpha=0.6, label='Mean = ' + str(data.mean()))
     plt.ylabel('samples [n]')
     plt.grid(True)
     plt.legend()
+
 
 def histogramfit(data):
     # best fit of data

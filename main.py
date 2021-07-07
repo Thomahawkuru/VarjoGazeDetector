@@ -11,19 +11,17 @@ from pathlib import Path
 savedata        = False     # whether or not the gaze events and their measures are saved in .csv files
 showfig         = True      # whether or not the plot figures are shown after detection
 savefig         = False     # whether or not the plot figures are saved after detection
-printdetection  = False     # show runtime info about the detection in the console
-printresults    = False     # show results of the detection in the console
+debugdetection  = False     # show runtime info about the detection in the console
+printresults    = True      # show results of the detection in the console
 
 # Import csv files --------------------------------------------------------------------------------------------------
-datapath = os.getcwd() + "/testdata/"  # put the path to your data here
-participants = 2  # number of participants
-trails = 2  # trails per participant
-filename = 'varjo_gaze_output'  # + date (automatically added)
+datapath        = os.getcwd() + "/testdata/"    # put the path to your data here
+participants    = 2                             # number of participants
+trails          = 2                             # trails per participant
+filename        = 'varjo_gaze_output'           # + date (automatically added)
 
 for participant in range(1, participants + 1):
-    print()
-    print()
-    print('Analyisis results for participant {}'.format(participant))
+    print(), print(), print('Analyisis results for participant {}'.format(participant))
     #start plot
     fig, axs = plt.subplots(trails, figsize=[25.60, 7.20*trails])
     fig.suptitle('Detection per trail for participant {}'.format(participant))
@@ -31,28 +29,28 @@ for participant in range(1, participants + 1):
     for trail in range(1, trails + 1):
         trailpath = datapath + '{}/{}/'.format(participant,trail)
 
-        print('Trail ' + str(trail))
-        gazedata = readers.Gaze(datapath, participant, trail, filename)
+        print(), print('Trail ' + str(trail))
+        gazedata  = readers.Gaze(datapath, participant, trail, filename)
         pupildata = readers.Pupil(datapath, participant, trail, filename)
         focusdata = readers.Focus(datapath, participant, trail, filename)
 
 # classify gaze events ----------------------------------------------------------------------------------------------
-        classifiedgazedata = run_detection.DetectGazeEvents(gazedata, printdetection)
+        classifiedgazedata = run_detection.DetectGazeEvents(gazedata, debugdetection)
 
-        t = classifiedgazedata['data']['time'] / 1000  # [s]
-        x = classifiedgazedata['data']['x']  # [deg]
-        y = classifiedgazedata['data']['y']  # [deg]
-        v = classifiedgazedata['data']['v']  # [deg/s]
-        e = classifiedgazedata['data']['EYE_MOVEMENT_TYPE']  # ('UNKNOWN', 'FIX', 'SACCADE', 'SP', 'NOISE', 'BLINK', 'NOISE_CLUSTER', 'PSO')
+        t = classifiedgazedata['data']['time'] / 1000           # [s]
+        x = classifiedgazedata['data']['x']                     # [deg]
+        y = classifiedgazedata['data']['y']                     # [deg]
+        v = classifiedgazedata['data']['v']                     # [deg/s]
+        e = classifiedgazedata['data']['EYE_MOVEMENT_TYPE']     # ('UNKNOWN', 'FIX', 'SACCADE', 'SP', 'NOISE', 'BLINK', 'NOISE_CLUSTER', 'PSO')
 
         dt = 1000 / np.mean(np.diff(classifiedgazedata['data']['time']))
         print("Gaze data recorded at: {} Hz".format(dt))
 
 # Analyzing and saving ----------------------------------------------------------------------------------------------
         Fixations = calculators.fixation(x, y, t, e, printresults)
-        Saccades = calculators.saccade(x, y, v, t, e, printresults)
-        Persuits = calculators.persuit(x, y, v, t, e, printresults)
-        Blinks = calculators.blink(t, e, printresults)
+        Saccades  = calculators.saccade(x, y, v, t, e, printresults)
+        Persuits  = calculators.persuit(x, y, v, t, e, printresults)
+        Blinks    = calculators.blink(t, e, printresults)
 
         if savedata:
             outputpath = trailpath + 'detection'
