@@ -166,5 +166,5 @@ def save_csv(data, fname, datapath):
     delimiter = ','
     header = delimiter.join(names)
 
-    np.savetxt(datapath+fname, data, delimiter=delimiter, header=header, comments='')
+    np.savetxt(datapath + '/' + fname, data, delimiter=delimiter, header=header, comments='')
 

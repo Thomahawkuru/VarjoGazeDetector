@@ -6,16 +6,17 @@ import calculators
 import plotters
 import functions
 import run_detection
+from pathlib import Path
 
+savedata    = True
+showfig     = False
+savefig     = True
 debugging   = False
-savedata    = False
-showfig     = True
-savefig     = False
 
 # Import csv files --------------------------------------------------------------------------------------------------
 datapath = os.getcwd() + "/testdata/"  # put the path to your data here
-participants = 2
-trails = 2  # per participant
+participants = 1  # number of participants
+trails = 2  # trails per participant
 filename = 'varjo_gaze_output'  # + date (automatically added)
 
 for participant in range(1, participants + 1):
@@ -23,8 +24,8 @@ for participant in range(1, participants + 1):
     print()
     print('Analyisis results for participant {}'.format(participant))
     #start plot
-    fig, axs = plt.subplots(trails, figsize=[25.60, 14.40])
-    fig.suptitle('Detection per trail for: Participant {}'.format(participant))
+    fig, axs = plt.subplots(trails, figsize=[25.60, 7.20*trails])
+    fig.suptitle('Detection per trail for participant {}'.format(participant))
 
     for trail in range(1, trails + 1):
         trailpath = datapath + '{}/{}/'.format(participant,trail)
@@ -53,22 +54,24 @@ for participant in range(1, participants + 1):
         Blinks = calculators.blink(t, e)
 
         if savedata:
-            functions.save_csv(Fixations, 'fixations.csv', trailpath)
-            functions.save_csv(Saccades, 'saccades.csv', trailpath)
-            functions.save_csv(Persuits, 'persuits.csv', trailpath)
-            functions.save_csv(Blinks, 'blinks.csv', trailpath)
+            outputpath = trailpath + 'detection'
+            Path(outputpath).mkdir(parents=True, exist_ok=True)
+
+            functions.save_csv(Fixations, 'fixations.csv', outputpath)
+            functions.save_csv(Saccades, 'saccades.csv', outputpath)
+            functions.save_csv(Persuits, 'persuits.csv', outputpath)
+            functions.save_csv(Blinks, 'blinks.csv', outputpath)
 
 # Plotting and saving------------------------------------------------------------------------------------------------
         plotters.detection(x, y, t, v, Fixations, Saccades, Persuits, Blinks, trail, axs)
-
         plotters.calculation(Fixations, Saccades, Persuits, Blinks, trail, participant)
-        outputpath = trailpath + "calculation-p{}-t{}.png".format(participant,trail,participant,trail)
+        outputpath = trailpath + "calculation-p{}-t{}.png".format(participant, trail, participant, trail)
         if savefig: plt.savefig(outputpath, bbox_inches='tight')
-        plt.close(plt.figure(trail+1))
 
     plt.figure(1)
     outputpath = datapath + '{}/detection-p{}.png'.format(participant, participant)
     if savefig: plt.savefig(outputpath, bbox_inches='tight')
     if showfig: plt.show()
     plt.close(plt.figure(1))
+
 
