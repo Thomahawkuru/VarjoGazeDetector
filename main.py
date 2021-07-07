@@ -8,10 +8,11 @@ import functions
 import run_detection
 from pathlib import Path
 
-savedata    = True
-showfig     = False
-savefig     = True
-debugging   = False
+savedata        = False     # whether or not the gaze events and their measures are saved in .csv files
+showfig         = True      # whether or not the plot figures are shown after detection
+savefig         = False     # whether or not the plot figures are saved after detection
+printdetection  = False     # show runtime info about the detection in the console
+printresults    = False     # show results of the detection in the console
 
 # Import csv files --------------------------------------------------------------------------------------------------
 datapath = os.getcwd() + "/testdata/"  # put the path to your data here
@@ -29,14 +30,14 @@ for participant in range(1, participants + 1):
 
     for trail in range(1, trails + 1):
         trailpath = datapath + '{}/{}/'.format(participant,trail)
-        print()
+
         print('Trail ' + str(trail))
         gazedata = readers.Gaze(datapath, participant, trail, filename)
         pupildata = readers.Pupil(datapath, participant, trail, filename)
         focusdata = readers.Focus(datapath, participant, trail, filename)
 
 # classify gaze events ----------------------------------------------------------------------------------------------
-        classifiedgazedata = run_detection.DetectGazeEvents(gazedata, debugging)
+        classifiedgazedata = run_detection.DetectGazeEvents(gazedata, printdetection)
 
         t = classifiedgazedata['data']['time'] / 1000  # [s]
         x = classifiedgazedata['data']['x']  # [deg]
@@ -48,10 +49,10 @@ for participant in range(1, participants + 1):
         print("Gaze data recorded at: {} Hz".format(dt))
 
 # Analyzing and saving ----------------------------------------------------------------------------------------------
-        Fixations = calculators.fixation(x, y, t, e)
-        Saccades = calculators.saccade(x, y, v, t, e)
-        Persuits = calculators.persuit(x, y, v, t, e)
-        Blinks = calculators.blink(t, e)
+        Fixations = calculators.fixation(x, y, t, e, printresults)
+        Saccades = calculators.saccade(x, y, v, t, e, printresults)
+        Persuits = calculators.persuit(x, y, v, t, e, printresults)
+        Blinks = calculators.blink(t, e, printresults)
 
         if savedata:
             outputpath = trailpath + 'detection'

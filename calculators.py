@@ -2,7 +2,7 @@ import numpy
 import numpy as np
 
 
-def fixation(x, y, time, events):
+def fixation(x, y, time, events, printing):
     """Calculate fixation measures
 	
 	arguments
@@ -51,7 +51,7 @@ def fixation(x, y, time, events):
         Fixations.append([time[s], time[e], duration, xpos, ypos])
 
     Fixations = numpy.array(Fixations)
-    if Fixations.any():
+    if Fixations.any() and printing:
         numFix = len(Fixations)
         avgFix = 1000 * sum(Fixations[:, 2]) / numFix
         print('Number of fixations: ' + str(numFix))
@@ -60,7 +60,7 @@ def fixation(x, y, time, events):
     return Fixations
 
 
-def saccade(x, y, v, time, events):
+def saccade(x, y, v, time, events, printing):
     """Calculate Saccade measures
 
 	arguments
@@ -115,7 +115,7 @@ def saccade(x, y, v, time, events):
         Saccades.append([time[s], time[e], duration, x[s], y[s], x[e], y[e], amplitude, meanvel, maxvel])
 
     Saccades = numpy.array(Saccades)
-    if Saccades.any():
+    if Saccades.any() and printing:
         numSac = len(Saccades)
         avgSacT = 1000 * sum(Saccades[:, 2]) / numSac
         avgSacA = sum(Saccades[:, 7]) / numSac
@@ -130,7 +130,7 @@ def saccade(x, y, v, time, events):
     return Saccades
 
 
-def persuit(x, y, v, time, events):
+def persuit(x, y, v, time, events, printing):
     """Calculates Persuit measures
 	arguments
 
@@ -183,7 +183,7 @@ def persuit(x, y, v, time, events):
         Persuits.append([time[s], time[e], duration, x[s], y[s], x[e], y[e], amplitude, meanvel, maxvel])
 
     Persuits = numpy.array(Persuits)
-    if Persuits.any():
+    if Persuits.any() and printing:
         numSP = len(Persuits)
         avgSPT = 1000 * sum(Persuits[:, 2]) / numSP
         avgSPA = sum(Persuits[:, 7]) / numSP
@@ -198,14 +198,14 @@ def persuit(x, y, v, time, events):
     return Persuits
 
 
-def blink(time, events):
+def blink(time, events, printing):
     """Calculates Blink measures
 	arguments
                 time		-	numpy array of EyeTribe timestamps
+                events      -   numpy array of of detected gaze events
 
 	returns
 		        Blinks	-	list of lists, each containing [starttime, endtime, duration]
-		        events      -   numpy array of of detected gaze events
 	"""
     # empty list to contain data
     Blinks = []
@@ -242,7 +242,7 @@ def blink(time, events):
         Blinks.append([time[s], time[e], time[e] - time[s]])
 
     Blinks = numpy.array(Blinks)
-    if Blinks.any():
+    if Blinks.any() and printing:
         numBlk = len(Blinks)
         avgBlk = 1000 * sum(Blinks[:, 2]) / numBlk
         print('Number of blinks: ' + str(numBlk))

@@ -96,6 +96,7 @@ def histogramreighley(data):
 
     plt.plot(x, rayleigh(loc=0, scale=scale).pdf(x) * len(V_norm_hist) * binwidth, lw=5, alpha=0.6,
              label=f'Rayleigh pdf (s={scale:.3f})')
+    plt.axvline(data.mean(), color='red', lw=5, alpha=0.6, label='Mean = ' + str(data.mean()))
     plt.ylabel('samples [n]')
     plt.grid(True)
     plt.legend()
