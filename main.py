@@ -72,6 +72,6 @@ for participant in range(1, participants + 1):
     outputpath = datapath + '{}/detection-p{}.png'.format(participant, participant)
     if savefig: plt.savefig(outputpath, bbox_inches='tight')
     if showfig: plt.show()
-    plt.close(plt.figure(1))
+    if savefig: plt.close('all')
 
 
