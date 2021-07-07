@@ -1,9 +1,9 @@
 import os
-
 import pandas
 import math
 import functions
 import numpy as np
+
 
 def file_reader(path, participant, trail, filename):
     # read data file
@@ -26,9 +26,12 @@ def Gaze(path, participant, trail, filename):
     y = np.array(gazeData['gaze_forward_y'])
     z = np.array(gazeData['gaze_forward_z'])
 
-    # get time stamps
-    t = gazeData['raw_timestamp'] / 10 ** 6
-    t = np.array(t - t[0])
+    # get time stamps, checks wether or not a video time stamp is available
+    if 'relative_to_video_first_frame_timestamp' in gazeData.columns:
+        t = np.array(gazeData['relative_to_video_first_frame_timestamp'] / 10 ** 6)
+    else:
+        t = gazeData['raw_timestamp'] / 10 ** 6
+        t = np.array(t - t[0])
 
     # convert to angles in deg
     Tx = (180 / math.pi) * np.arcsin(x)
