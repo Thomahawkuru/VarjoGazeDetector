@@ -15,7 +15,7 @@ debugging   = False
 
 # Import csv files --------------------------------------------------------------------------------------------------
 datapath = os.getcwd() + "/testdata/"  # put the path to your data here
-participants = 1  # number of participants
+participants = 2  # number of participants
 trails = 2  # trails per participant
 filename = 'varjo_gaze_output'  # + date (automatically added)
 
