@@ -18,16 +18,12 @@ def load_CSV_as_arff_object(x, y, t, s, fname):
                        ('x', 'NUMERIC'),
                        ('y', 'NUMERIC'),
                        ('v', 'NUMERIC'),
-                       ('statis', 'INTEGER'),
-                       ('EventID', 'INTEGER']},
+                       ('status', 'INTEGER')]},
     and fill in its fields.
 
     'data' should first contain a numpy list of lists (the latter lists should be of the same length as 'attributes'.
     'description' is just a string that gets put into the beginning of the file.
-    'metadata' is a dictionary, where the following keys are needed later on:
-        - "width_px", "height_px" - pixel dimensions of the video
-        - "width_mm", "height_mm" - physical dimensions of the video (in millimeters)
-        - "distance_mm" - distance between the observer's eyes and the monitor (in millimeters)
+    'metadata' is empty
     'attributes' (if additional ones are required) is a list of tuples, each tuple consisting of 2 elements:
         - attribute name
         - attribute type, can be INTEGER (=int64), NUMERIC (=float32), REAL (=double), or a list of strings, which
@@ -37,10 +33,9 @@ def load_CSV_as_arff_object(x, y, t, s, fname):
     >> arff_obj = ArffHelper.convert_data_to_structured_array(arff_obj)
     to (unsurprisingly) convert the data in @arff_obj['data'] into a structured numpy array for easier data access.
 
-
-    :param fname: name of .coord file.
+    :param fname: name of .csv file.
     :return: an arff object with keywords:
-             "@RELATION, @DESCRIPTION, @DATA, @METADATA, @ATTRIBUTES".
+             "@RELATION, @DESCRIPTION, @DATA, @ATTRIBUTES".
     """
 
     COMMENT_PREFIX = '#'
@@ -108,7 +103,22 @@ def get_xy_moving_average(data, window_size, inplace=False):
             data[column][:] = res
     return data
 
-def fill_blink_gaps(Tx, Ty, t, s,):
+def fill_blink_gaps(Tx, Ty, t, s):
+    """
+    Find gaps in the data that represent blinks, for recordings with Varjo Base.
+
+    In Unity recording, a blink period is recorded with zeros. This is how blinks are detected.
+    Varjo base does not record any data during a blink, so instead a jump in time-interval is found.
+    This funcition detects those gaps in the data and fills them with zero arrays for blink detection.
+
+    :param Tx: numpy array with 'x' data in deg
+    :param Ty: numpy array with 'y' data in deg
+    :param t: numpy array with timestamps
+    :param s: numpy array with gaze tatus
+
+    :return: data set Tx, Ty, t, s with added interpolations where blinks occured
+
+    """
     # find blinks for Varjo base recording by gaps in time array
     dt = np.diff(t)
     blink_onsets = np.nonzero(dt > 30)[0]
@@ -141,6 +151,16 @@ def fill_blink_gaps(Tx, Ty, t, s,):
     return Tx, Ty, t, s
 
 def save_csv(data, fname, datapath):
+    """
+        saves detections and their measures csv files (fixations, saccades, persuits and blinks).
+        Each row of the csv, is one gaze event. It includes measures such as :
+        ["t_start", 't_end', 'duration', 'x_start', 'y_start', 'x_end', 'y_end', 'amplitude', 'mean_vel', 'max_vel']
+
+        :param data: data to save in the .csv
+        :param fname: filename for the created .csv
+        :param datapath: path to save the created .csv
+
+    """
     allnames = ["t_start", 't_end', 'duration', 'x_start', 'y_start', 'x_end', 'y_end', 'amplitude', 'mean_vel', 'max_vel']
     names = allnames[0:len(data[1, :])]
     delimiter = ','
