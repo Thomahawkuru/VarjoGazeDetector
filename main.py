@@ -62,7 +62,7 @@ for participant in range(1, participants + 1):
             functions.save_csv(Blinks, 'blinks.csv', outputpath)
 
 # Plotting and saving------------------------------------------------------------------------------------------------
-        plotters.detection(x, y, t, v, Fixations, Saccades, Persuits, Blinks, trail, axs)
+        plotters.detection(x, y, t, v, Fixations, Saccades, Persuits, Blinks, trails, trail, axs)
         plotters.calculation(Fixations, Saccades, Persuits, Blinks, trail, participant)
         outputpath = trailpath + "calculation-p{}-t{}.png".format(participant, trail, participant, trail)
         if savefig: plt.savefig(outputpath, bbox_inches='tight')
