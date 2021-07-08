@@ -70,7 +70,7 @@ Detection and their measures are saved as fixations.csv, saccades.csv, persuits.
 # How to use
 Make sure the right packages are installed in your environment:
 ```bash
-pip install numpy pandas matplotlib liac-arff 
+pip install numpy pandas scipy matplotlib liac-arff 
 ```
 
 Detection is run by running the script main.py. Here you can set global parameters for running the detection:
