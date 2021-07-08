@@ -73,13 +73,13 @@ def DetectGazeEvents(gazedata, verbose):
 #         "max_distance_to_saccade_millisec": 25
 #
 #     "FixationDetector": {
-#         "prefiltering_interval_spread_threshold_degrees": 2.0
-#         "min_sp_duration_millisec": 50,
-#         "sliding_window_width_millisec": 50
+#         "prefiltering_interval_spread_threshold_degrees": 1.4142135623730951
+#         "min_sp_duration_millisec": 141.42135623730952,
+#         "sliding_window_width_millisec": 100
 #         "normalization_sliding_window_size_samples": 5
 #         "speed_threshold_degrees_per_sec": 2.0
 #         "sliding_window_criterion": "speed"
-#         "intersaccadic_interval_duration_threshold_millisec": 150
+#         "intersaccadic_interval_duration_threshold_millisec": 75
 #
 #     "SmoothPursuitDetector": {
 #         "min_pts": 1,
