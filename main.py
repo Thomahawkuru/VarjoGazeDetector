@@ -55,11 +55,15 @@ for participant in range(1, participants + 1):
         if savedata:
             outputpath = trailpath + 'detection'
             Path(outputpath).mkdir(parents=True, exist_ok=True)
-
-            functions.save_csv(Fixations, 'fixations.csv', outputpath)
-            functions.save_csv(Saccades, 'saccades.csv', outputpath)
-            functions.save_csv(Persuits, 'persuits.csv', outputpath)
-            functions.save_csv(Blinks, 'blinks.csv', outputpath)
+            # save detections per even type with their measures
+            functions.save_events(Fixations, 'fixations.csv', outputpath)
+            functions.save_events(Saccades, 'saccades.csv', outputpath)
+            functions.save_events(Persuits, 'persuits.csv', outputpath)
+            functions.save_events(Blinks, 'blinks.csv', outputpath)
+            # add gaze_event classification column to raw data and save copy
+            csvdata = readers.file_reader(datapath, participant, trail, filename)
+            csvdata["gaze_event"] = classifiedgazedata['data']['EYE_MOVEMENT_TYPE']
+            csvdata.to_csv(outputpath + "/classified_data.csv")
 
 # Plotting and saving------------------------------------------------------------------------------------------------
         plotters.detection(x, y, t, v, Fixations, Saccades, Persuits, Blinks, trails, trail, axs)
