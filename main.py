@@ -46,12 +46,13 @@ for participant in range(1, participants + 1):
         dt = 1000 / np.mean(np.diff(classifiedgazedata['data']['time']))
         print("Gaze data recorded at: {} Hz".format(dt))
 
-# Analyzing and saving ----------------------------------------------------------------------------------------------
+# Analyzing gaze event measures --------------------------------------------------------------------------------------
         Fixations = calculators.fixation(x, y, t, e, printresults)
         Saccades  = calculators.saccade(x, y, v, t, e, printresults)
         Persuits  = calculators.persuit(x, y, v, t, e, printresults)
         Blinks    = calculators.blink(t, e, printresults)
 
+# Saving gaze event data ---------------------------------------------------------------------------------------------
         if savedata:
             outputpath = trailpath + 'detection'
             Path(outputpath).mkdir(parents=True, exist_ok=True)
