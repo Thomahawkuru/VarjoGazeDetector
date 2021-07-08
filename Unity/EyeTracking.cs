@@ -20,16 +20,10 @@ public class EyeTracking : MonoBehaviour
     [Header("Gaze calibration settings")]
     public VarjoEyeTracking.GazeCalibrationMode gazeCalibrationMode = VarjoEyeTracking.GazeCalibrationMode.Fast;
     public KeyCode calibrationRequestKey = KeyCode.Space;
+    public bool LogAfterCalibration = true;
 
-    [Header("Start logging after calibration")]
-    public bool BeginLogging = true;
-
-    [Header("Gaze output filter settings")]
-    public VarjoEyeTracking.GazeOutputFrequency gazeOutputFrequency = VarjoEyeTracking.GazeOutputFrequency.Frequency100Hz;
-
-    [Header("Gaze output filter settings")]
-    public VarjoEyeTracking.GazeOutputFilterType gazeOutputFilterType = VarjoEyeTracking.GazeOutputFilterType.None;
-    public KeyCode setOutputFilterTypeKey = KeyCode.RightShift;
+    [Header("Gaze output frequency setting (if available)")]
+    public VarjoEyeTracking.GazeOutputFrequency gazeOutputFrequency = VarjoEyeTracking.GazeOutputFrequency.MaximumSupported;
 
     [Header("Toggle gaze target visibility")]
     public bool showGazeTarget = false;
@@ -141,8 +135,9 @@ public class EyeTracking : MonoBehaviour
         VarjoEyeTracking.SetGazeOutputFrequency(gazeOutputFrequency);
         Debug.Log("Gaze output frequency is now: " + VarjoEyeTracking.GetGazeOutputFrequency());
 
+        //make sure filtering is off
+        VarjoEyeTracking.GazeOutputFilterType gazeOutputFilterType = VarjoEyeTracking.GazeOutputFilterType.None;
         VarjoEyeTracking.SetGazeOutputFilterType(gazeOutputFilterType);
-        Debug.Log("Gaze output filter type is now: " + VarjoEyeTracking.GetGazeOutputFilterType());
 
         //Hiding the gazetarget if gaze is not available or if the gaze calibration is not done
         if (VarjoEyeTracking.IsGazeAllowed() && VarjoEyeTracking.IsGazeCalibrated() && showGazeTarget)
@@ -167,10 +162,10 @@ public class EyeTracking : MonoBehaviour
     void Update()
     {
         // start loggin when calibration is finished
-        if (VarjoEyeTracking.IsGazeAllowed() && VarjoEyeTracking.IsGazeCalibrated() && BeginLogging == true)
+        if (VarjoEyeTracking.IsGazeAllowed() && VarjoEyeTracking.IsGazeCalibrated() && LogAfterCalibration == true)
         {
             StartLogging();
-            BeginLogging = false;
+            LogAfterCalibration = false;
         }
 
         // Request gaze calibration
@@ -178,14 +173,6 @@ public class EyeTracking : MonoBehaviour
         {
             VarjoEyeTracking.RequestGazeCalibration(gazeCalibrationMode);
         }
-
-        // Set output filter type
-        if (Input.GetKeyDown(setOutputFilterTypeKey))
-        {
-            VarjoEyeTracking.SetGazeOutputFilterType(gazeOutputFilterType);
-            Debug.Log("Gaze output filter type is now: " + VarjoEyeTracking.GetGazeOutputFilterType());
-        }
-
         // Check if gaze is allowed
         if (Input.GetKeyDown(checkGazeAllowed))
         {
