@@ -24,7 +24,6 @@ def Gaze(path, participant, trail, filename):
     s = np.array(gazeData['status'])
     x = np.array(gazeData['gaze_forward_x'])
     y = np.array(gazeData['gaze_forward_y'])
-    z = np.array(gazeData['gaze_forward_z'])
 
     # get time stamps, checks wether or not a video time stamp is available
     if 'relative_to_video_first_frame_timestamp' in gazeData.columns:
