@@ -3,37 +3,15 @@ from blink_detector import BlinkDetector
 from fixation_detector import FixationDetector
 from sp_detector import SmoothPursuitDetector
 
-# DEFAULT PARAMETERS:
-# {
-#     "SaccadeDetector": {
-#         "tolerance": 0.0,
-#         "threshold_onset_fast_degree_per_sec": 137.5,
-#         "threshold_onset_slow_degree_per_sec": 17.1875,
-#         "threshold_offset_degree_per_sec": 17.1875,
-#         "max_speed_degree_per_sec": 1031.25,
-#         "min_duration_millisec": 15,
-#         "max_duration_millisec": 160,
-#         "velocity_integral_interval_millisec": 40
-#     },
-#     "BlinkDetector": {
-#         "max_distance_to_saccade_millisec": 25
-#     },
-#     "FixationDetector": {
-#         "prefiltering_interval_spread_threshold_degrees": 1.4142135623730951,
-#         "min_sp_duration_millisec": 141.35623730952,
-#         "sliding_window_width_millisec": 100,
-#         "normalization_sliding_window_size_samples": 5,
-#         "speed_threshold_degrees_per_sec": 2.0,
-#         "sliding_window_criterion": "speed",
-#         "intersaccadic_interval_duration_threshold_millisec": 75
-#     },
-#     "SmoothPursuitDetector": {
-#         "min_pts": 160,
-#         "min_observers": null,
-#         "eps_deg": 4.0,
-#         "time_slice_millisec": 80
-#     }
-# }
+# Notes on the detectors:
+# (1) The saccade and blink detectors are quite robust together, their parameters are probably best left default, unless
+# there is a specific reason to change them.
+# (2) The balance between precision and recall of SP is currently shifted towards precision: we want to be sure that
+# what we almost as SP, mostly is, while detecting a decent part of the real SP. If your priorities diverge from this,
+# you should adjust the parameters of the SmoothPursuitDetector, relaxing the thresholds a bit, as well as
+# the parameters of the FixationDetector, since most of the recall loss actually happens there.
+# There you can try to relax the "prefiltering_interval_spread_threshold_degrees", "speed_threshold_degrees_per_sec" and
+# "min_sp_duration_millisec" parers.
 
 def DetectGazeEvents(gazedata, verbose):
     # Saccade Detection --------------------------------------------------------------------------------------------------
@@ -50,8 +28,8 @@ def DetectGazeEvents(gazedata, verbose):
 
     # Blink detection----------------------------------------------------------------------------------------------------
     blkparam = dict()
-    blkparam['MINIMAL_BLINK_DURATION'] = 10 # milliseconds
-    blkparam["MAXIMAL_DISTANCE_TO_SACCADE_MILLISEC"] = 20  # milliseconds
+    blkparam['MINIMAL_BLINK_DURATION_MILLISEC'] = 20 # milliseconds
+    blkparam["MAXIMAL_DISTANCE_TO_SACCADE_MILLISEC"] = 25  # milliseconds
     blkparam["VERBOSE"] = verbose
     gazedata = BlinkDetector(blkparam, gazedata)
 
@@ -69,7 +47,7 @@ def DetectGazeEvents(gazedata, verbose):
 
     # Smooth Persuit detection-------------------------------------------------------------------------------------------
     SPparam = dict()
-    SPparam["MIN_PTS"] = 1 # int(160 * (1 / 46.9) * (90 / 250))  # minimum points for a neighborhood (default value, e.g. 160) * (N_observers / 46.9) * (F_hz / 250)
+    SPparam["MIN_PTS"] = 1  # minimum points for a neighborhood (default value, e.g. 160) * (N_observers / 46.9) * (F_hz / 250)
     SPparam["EPS_DEG"] = 4  # deg
     SPparam["TIME_SLICE_MILLISEC"] = 80  # milliseconds
     SPparam["VERBOSE"] = verbose  # debug mode
@@ -79,4 +57,31 @@ def DetectGazeEvents(gazedata, verbose):
 
     return classifiedgazedata
 
-
+# DEFAULT PARAMETERS
+#
+#     "SaccadeDetector": {
+#         "threshold_onset_fast_degree_per_sec": 137.5
+#         "threshold_onset_slow_degree_per_sec": 17.1875
+#         "threshold_offset_degree_per_sec": 17.1875
+#         "max_speed_degree_per_sec": 1031.25
+#         "min_duration_millisec": 15
+#         "max_duration_millisec": 160
+#         "velocity_integral_interval_millisec": 4
+#
+#     "BlinkDetector": {
+#         "minimal_blink_duration_millisec" = 10
+#         "max_distance_to_saccade_millisec": 25
+#
+#     "FixationDetector": {
+#         "prefiltering_interval_spread_threshold_degrees": 2.0
+#         "min_sp_duration_millisec": 50,
+#         "sliding_window_width_millisec": 50
+#         "normalization_sliding_window_size_samples": 5
+#         "speed_threshold_degrees_per_sec": 2.0
+#         "sliding_window_criterion": "speed"
+#         "intersaccadic_interval_duration_threshold_millisec": 150
+#
+#     "SmoothPursuitDetector": {
+#         "min_pts": 1,
+#         "eps_deg": 4.0,
+#         "time_slice_millisec": 80

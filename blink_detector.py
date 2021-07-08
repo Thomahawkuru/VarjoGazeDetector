@@ -75,7 +75,7 @@ def BlinkDetector(param, gaze_points, inplace=False):
             print("Extended it to {} {}".format(times[onset], times[offset]))
 
         # remove gaps in data that are to short to be blinks.
-        if times[offset] - times[onset] < param['MINIMAL_BLINK_DURATION']:
+        if times[offset] - times[onset] < param['MINIMAL_BLINK_DURATION_MILLISEC']:
             gaze_points['data'][onset:offset + 1]['EYE_MOVEMENT_TYPE'] = 'NOISE'
         else:
             gaze_points['data'][onset:offset + 1]['EYE_MOVEMENT_TYPE'] = 'BLINK'
