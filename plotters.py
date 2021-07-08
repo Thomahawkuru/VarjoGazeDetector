@@ -12,27 +12,27 @@ def detection(x, y, t, v, fixations, saccades, persuits, blinks, trail, axs):
     axs1.set_title('Trail ' + str(trail))
     axs1.set_xlabel('Time [s]')
 
-    axs1.plot(t, v, 'silver')
+    axs1.plot(t, v, 'silver', label="Velocity")
     axs1.set_ylabel('Velocity [deg/s]')
     axs1.set_ylim([-1000, 1000])
-    axs1.legend(["Velocity"])
 
     axs2 = axs1.twinx()
-    axs2.plot(t, x, 'tab:orange')
-    axs2.plot(t, y, 'tab:green')
+    axs2.plot(t, x, 'tab:orange', label="Horizontal")
+    axs2.plot(t, y, 'tab:green', label="Vertical")
     axs2.set_ylabel('Angel [deg]')
     axs2.set_ylim([-22.5, 22.5])
-    axs2.legend(["Horizontal", "Vertical"])
 
     for i in range(len(fixations)):
-        axs1.axvspan(fixations[i, 0], fixations[i, 1], color='g', alpha=.1)
+        axs1.axvspan(fixations[i, 0], fixations[i, 1], color='g', alpha=.1, label =  "_"*i + "Fixations")
     for i in range(len(saccades)):
-        axs1.axvspan(saccades[i, 0], saccades[i, 1], color='r', alpha=.1)
+        axs1.axvspan(saccades[i, 0], saccades[i, 1], color='r', alpha=.1, label =  "_"*i + "Saccades")
     for i in range(len(persuits)):
-        axs1.axvspan(persuits[i, 0], persuits[i, 1], color='y', alpha=.1)
+        axs1.axvspan(persuits[i, 0], persuits[i, 1], color='y', alpha=.1, label =  "_"*i + "Persuits")
     for i in range(len(blinks)):
-        axs1.axvspan(blinks[i, 0], blinks[i, 1], color='b', alpha=.1)
+        axs1.axvspan(blinks[i, 0], blinks[i, 1], color='b', alpha=.1, label =  "_"*i + "Blinks")
 
+    axs1.legend(loc='upper left')
+    axs2.legend(loc='upper right')
 
 def calculation(fixations, saccades, persuits, blinks, trail, participant):
     plt.figure(trail + 1, figsize=[25.60, 14.40])
