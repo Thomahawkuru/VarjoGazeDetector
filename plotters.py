@@ -3,6 +3,9 @@ import numpy as np
 from scipy.stats import rayleigh
 from scipy.stats import norm
 
+"""
+Functions for helping with plotting of various figures and data
+"""
 
 def detection(x, y, t, v, fixations, saccades, persuits, blinks, trail, axs):
     axs1 = axs[trail - 1]

@@ -15,10 +15,10 @@ debugdetection  = False     # show runtime info about the detection in the conso
 printresults    = True      # show results of the detection in the console
 
 # Import csv files --------------------------------------------------------------------------------------------------
-datapath        = os.getcwd() + "/testdata/"    # put the path to your data here
+datapath        = os.getcwd() + "/testdata/"    # put the full path to your data here
 participants    = 2                             # number of participants
 trails          = 2                             # trails per participant
-filename        = 'varjo_gaze_output'           # + date (automatically added)
+filename        = 'varjo_gaze_output'           # looks for files with this string in the name
 
 for participant in range(1, participants + 1):
     print(), print(), print('Analyisis results for participant {}'.format(participant))

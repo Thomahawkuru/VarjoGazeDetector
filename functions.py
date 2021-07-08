@@ -2,6 +2,10 @@ import numpy as np
 from arff_helper import ArffHelper
 from collections import OrderedDict
 
+"""
+Various helper functions needed for rest of the code
+"""
+
 def load_CSV_as_arff_object(x, y, t, s, fname):
     """
     Load data from the given input .csv file and return an arff object.

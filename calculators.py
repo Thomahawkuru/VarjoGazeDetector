@@ -1,9 +1,14 @@
 import numpy
 import numpy as np
 
+"""
+Calculate measures of the detected gaze events, such as:
+["t_start", 't_end', 'duration', 'x_start', 'y_start', 'x_end', 'y_end', 'amplitude', 'mean_vel', 'max_vel']
+"""
 
 def fixation(x, y, time, events, printing):
-    """Calculate fixation measures
+    """
+    Calculate fixation measures
 	
 	arguments
 	time		-	numpy array of EyeTribe timestamps
@@ -61,7 +66,8 @@ def fixation(x, y, time, events, printing):
 
 
 def saccade(x, y, v, time, events, printing):
-    """Calculate Saccade measures
+    """
+    Calculate Saccade measures
 
 	arguments
 
@@ -131,7 +137,8 @@ def saccade(x, y, v, time, events, printing):
 
 
 def persuit(x, y, v, time, events, printing):
-    """Calculates Persuit measures
+    """
+    Calculates Persuit measures
 	arguments
 
 	x		-	numpy array of x positions
@@ -199,7 +206,8 @@ def persuit(x, y, v, time, events, printing):
 
 
 def blink(time, events, printing):
-    """Calculates Blink measures
+    """
+    Calculates Blink measures
 	arguments
                 time		-	numpy array of EyeTribe timestamps
                 events      -   numpy array of of detected gaze events
