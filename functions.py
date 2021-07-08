@@ -154,7 +154,7 @@ def fill_blink_gaps(Tx, Ty, t, s):
 
     return Tx, Ty, t, s
 
-def save_csv(data, fname, datapath):
+def save_events(data, fname, datapath):
     """
         saves detections and their measures csv files (fixations, saccades, persuits and blinks).
         Each row of the csv, is one gaze event. It includes measures such as :
@@ -172,3 +172,14 @@ def save_csv(data, fname, datapath):
 
     np.savetxt(datapath + '/' + fname, data, delimiter=delimiter, header=header, comments='')
 
+def save_classification(gazedata):
+    """
+        saves the calssification and timeline to a csv files.
+        Each row of the csv, is one gaze event. It includes measures such as :
+        ["t_start", 't_end', 'duration', 'x_start', 'y_start', 'x_end', 'y_end', 'amplitude', 'mean_vel', 'max_vel']
+
+        :param data: data to save in the .csv
+        :param fname: filename for the created .csv
+        :param datapath: path to save the created .csv
+
+    """
