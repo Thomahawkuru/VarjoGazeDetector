@@ -7,8 +7,11 @@ from scipy.stats import norm
 Functions for helping with plotting of various figures and data
 """
 
-def detection(x, y, t, v, fixations, saccades, persuits, blinks, trail, axs):
-    axs1 = axs[trail - 1]
+def detection(x, y, t, v, fixations, saccades, persuits, blinks, trails, trail, axs):
+    if trails > 1:
+        axs1 = axs[trail - 1]
+    else:
+        axs1 = axs
     axs1.set_title('Trail ' + str(trail))
     axs1.set_xlabel('Time [s]')
 
