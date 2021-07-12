@@ -74,7 +74,7 @@ def saccade(x, y, v, time, events, printing):
 	x		-	numpy array of x positions
 	y		-	numpy array of y positions
 	v       -   numpy array of velocities
-	time	-	numpy array of tracker timestamps in milliseconds
+	time	-	numpy array of trafcker timestamps in milliseconds
     events      -   numpy array of of detected gaze events
 
 	returns
@@ -136,9 +136,9 @@ def saccade(x, y, v, time, events, printing):
     return Saccades
 
 
-def persuit(x, y, v, time, events, printing):
+def pursuit(x, y, v, time, events, printing):
     """
-    Calculates Persuit measures
+    Calculates Pursuit measures
 	arguments
 
 	x		-	numpy array of x positions
@@ -148,10 +148,10 @@ def persuit(x, y, v, time, events, printing):
     events      -   numpy array of of detected gaze events
 
 	returns
-				Persuits	-	list of lists, each containing [starttime, endtime, duration, startx, starty, endx, endy,  amplitude, meanvel, maxvel])]
+				Pursuits	-	list of lists, each containing [starttime, endtime, duration, startx, starty, endx, endy,  amplitude, meanvel, maxvel])]
 	"""
     # empty list to contain data
-    Persuits = []
+    Pursuits = []
 
     # check where the missing samples are
     idx = numpy.array(events == 'SP', dtype=int)
@@ -169,7 +169,7 @@ def persuit(x, y, v, time, events, printing):
     if len(starts) > len(ends):
         ends = np.append(ends, len(idx) - 1)
 
-    # compile persuit starts and ends
+    # compile pursuit starts and ends
     for i in range(len(starts)):
         # get starting index
         s = starts[i]
@@ -187,22 +187,22 @@ def persuit(x, y, v, time, events, printing):
         meanvel = sum(v[s:e]) / len(v[s:e])
         maxvel = max(v[s:e])
 
-        Persuits.append([time[s], time[e], duration, x[s], y[s], x[e], y[e], amplitude, meanvel, maxvel])
+        Pursuits.append([time[s], time[e], duration, x[s], y[s], x[e], y[e], amplitude, meanvel, maxvel])
 
-    Persuits = numpy.array(Persuits)
-    if Persuits.any() and printing:
-        numSP = len(Persuits)
-        avgSPT = 1000 * sum(Persuits[:, 2]) / numSP
-        avgSPA = sum(Persuits[:, 7]) / numSP
-        avgSPV = sum(Persuits[:, 8]) / numSP
-        avgSPMV = sum(Persuits[:, 9]) / numSP
-        print('Number of Smooth Persuits: ' + str(numSP))
-        print('     Average persuit duration: ' + str(avgSPT) + 'ms')
-        print('     Average persuit Amplitude: ' + str(avgSPA) + ' deg')
-        print('     Average persuit velocity: ' + str(avgSPV) + ' deg/s')
-        print('     Average max persuit velocity: ' + str(avgSPMV) + ' deg/s')
+    Pursuits = numpy.array(Pursuits)
+    if Pursuits.any() and printing:
+        numSP = len(Pursuits)
+        avgSPT = 1000 * sum(Pursuits[:, 2]) / numSP
+        avgSPA = sum(Pursuits[:, 7]) / numSP
+        avgSPV = sum(Pursuits[:, 8]) / numSP
+        avgSPMV = sum(Pursuits[:, 9]) / numSP
+        print('Number of Smooth Pursuits: ' + str(numSP))
+        print('     Average pursuit duration: ' + str(avgSPT) + 'ms')
+        print('     Average pursuit Amplitude: ' + str(avgSPA) + ' deg')
+        print('     Average pursuit velocity: ' + str(avgSPV) + ' deg/s')
+        print('     Average max pursuit velocity: ' + str(avgSPMV) + ' deg/s')
 
-    return Persuits
+    return Pursuits
 
 
 def blink(time, events, printing):

@@ -45,7 +45,7 @@ def DetectGazeEvents(gazedata, verbose):
     fixparam["VERBOSE"] = verbose  # debug mode
     gazedata = FixationDetector(fixparam, gazedata)
 
-    # Smooth Persuit detection-------------------------------------------------------------------------------------------
+    # Smooth Pursuit detection-------------------------------------------------------------------------------------------
     SPparam = dict()
     SPparam["MIN_PTS"] = 1  # minimum points for a neighborhood (default value, e.g. 160) * (N_observers / 46.9) * (F_hz / 250)
     SPparam["EPS_DEG"] = 4  # deg

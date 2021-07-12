@@ -156,7 +156,7 @@ def fill_blink_gaps(Tx, Ty, t, s):
 
 def save_events(data, fname, datapath):
     """
-        saves detections and their measures csv files (fixations, saccades, persuits and blinks).
+        saves detections and their measures csv files (fixations, saccades, pursuits and blinks).
         Each row of the csv, is one gaze event. It includes measures such as :
         ["t_start", 't_end', 'duration', 'x_start', 'y_start', 'x_end', 'y_end', 'amplitude', 'mean_vel', 'max_vel']
 

@@ -7,7 +7,7 @@ from scipy.stats import norm
 Functions for helping with plotting of various figures and data
 """
 
-def detection(x, y, t, v, fixations, saccades, persuits, blinks, trials, trial, axs):
+def detection(x, y, t, v, fixations, saccades, pursuits, blinks, trials, trial, axs):
     if trials > 1:
         axs1 = axs[trial - 1]
     else:
@@ -29,15 +29,15 @@ def detection(x, y, t, v, fixations, saccades, persuits, blinks, trials, trial, 
         axs1.axvspan(fixations[i, 0], fixations[i, 1], color='g', alpha=.1, label =  "_"*i + "Fixations")
     for i in range(len(saccades)):
         axs1.axvspan(saccades[i, 0], saccades[i, 1], color='r', alpha=.1, label =  "_"*i + "Saccades")
-    for i in range(len(persuits)):
-        axs1.axvspan(persuits[i, 0], persuits[i, 1], color='y', alpha=.1, label =  "_"*i + "Persuits")
+    for i in range(len(pursuits)):
+        axs1.axvspan(pursuits[i, 0], pursuits[i, 1], color='y', alpha=.1, label =  "_"*i + "Pursuits")
     for i in range(len(blinks)):
         axs1.axvspan(blinks[i, 0], blinks[i, 1], color='b', alpha=.1, label =  "_"*i + "Blinks")
 
     axs1.legend(loc='upper left')
     axs2.legend(loc='upper right')
 
-def calculation(fixations, saccades, persuits, blinks, trial, participant):
+def calculation(fixations, saccades, pursuits, blinks, trial, participant):
     plt.figure(trial + 1, figsize=[25.60, 14.40])
     plt.subplot(4, 4, 1)
     histogramreighley(fixations[:, 2])
@@ -62,21 +62,21 @@ def calculation(fixations, saccades, persuits, blinks, trial, participant):
     plt.xlabel('Velocity [deg/s]')
 
     plt.subplot(4, 4, 9)
-    histogramreighley(persuits[:, 2])
-    plt.title("Persuit duration")
+    histogramreighley(pursuits[:, 2])
+    plt.title("Pursuit duration")
     plt.xlabel('Time [s]')
     plt.subplot(4, 4, 10)
-    histogramreighley(persuits[:, 7])
-    plt.title("Persuit amplitude")
+    histogramreighley(pursuits[:, 7])
+    plt.title("Pursuit amplitude")
     plt.xlabel('Amplitude [deg]')
     plt.subplot(4, 4, 11)
     plt.xlabel('Amplitude [deg]')
-    histogramreighley(persuits[:, 8])
-    plt.title("Persuit mean velocity")
+    histogramreighley(pursuits[:, 8])
+    plt.title("Pursuit mean velocity")
     plt.xlabel('Velocity [deg/s]')
     plt.subplot(4, 4, 12)
-    histogramreighley(persuits[:, 9])
-    plt.title("Persuit max velocity")
+    histogramreighley(pursuits[:, 9])
+    plt.title("Pursuit max velocity")
     plt.xlabel('Velocity [deg/s]')
 
     plt.subplot(4, 4, 13)
