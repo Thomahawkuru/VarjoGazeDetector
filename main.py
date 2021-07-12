@@ -49,7 +49,7 @@ for participant in range(1, participants + 1):
 # Analyzing gaze event measures --------------------------------------------------------------------------------------
         Fixations = calculators.fixation(x, y, t, e, printresults)
         Saccades  = calculators.saccade(x, y, v, t, e, printresults)
-        Persuits  = calculators.persuit(x, y, v, t, e, printresults)
+        Pursuits  = calculators.pursuit(x, y, v, t, e, printresults)
         Blinks    = calculators.blink(t, e, printresults)
 
 # Saving gaze event data ---------------------------------------------------------------------------------------------
@@ -59,7 +59,7 @@ for participant in range(1, participants + 1):
             # save detections per even type with their measures
             functions.save_events(Fixations, 'fixations.csv', outputpath)
             functions.save_events(Saccades, 'saccades.csv', outputpath)
-            functions.save_events(Persuits, 'persuits.csv', outputpath)
+            functions.save_events(Pursuits, 'pursuits.csv', outputpath)
             functions.save_events(Blinks, 'blinks.csv', outputpath)
             # add gaze_event classification column to raw data and save copy
             csvdata = readers.file_reader(datapath, participant, trial, filename)
@@ -67,8 +67,8 @@ for participant in range(1, participants + 1):
             csvdata.to_csv(outputpath + "/classified_data.csv")
 
 # Plotting and saving------------------------------------------------------------------------------------------------
-        plotters.detection(x, y, t, v, Fixations, Saccades, Persuits, Blinks, trials, trial, axs)
-        plotters.calculation(Fixations, Saccades, Persuits, Blinks, trial, participant)
+        plotters.detection(x, y, t, v, Fixations, Saccades, Pursuits, Blinks, trials, trial, axs)
+        plotters.calculation(Fixations, Saccades, Pursuits, Blinks, trial, participant)
         outputpath = trialpath + "calculation-p{}-t{}.png".format(participant, trial, participant, trial)
         if savefig: plt.savefig(outputpath, bbox_inches='tight')
 

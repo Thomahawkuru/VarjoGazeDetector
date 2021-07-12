@@ -1,6 +1,6 @@
 # Varjo Gaze Detector
 
-Varjo Gaze Detector classifies gaze events in eye-tracking recordings from the Varjo VR and XR headsets. It detects fixations, saccades, smooth persuits and blinks. As well as their duration, amplituded and mean/max velocities. 
+Varjo Gaze Detector classifies gaze events in eye-tracking recordings from the Varjo VR and XR headsets. It detects fixations, saccades, smooth pursuits and blinks. As well as their duration, amplituded and mean/max velocities. 
 This tool is developed by Thomas de Boer, with use of the detection algorithm from [sp_tool](https://github.com/MikhailStartsev/sp_tool) by Mikhail Startsev. Please cite their paper when using this code:
 
     @inproceedings{agtzidis2016smooth,
@@ -65,7 +65,7 @@ Make sure the folder structure is participant/trial as follows, if you would lik
                 varjo_gaze_output_XX-XX-XXXX.csv
 
 The detection results are saved in a 'detection' folder in each trial folder. 
-Detection and their measures are saved as fixations.csv, saccades.csv, persuits.csv and blinks.csv
+Detection and their measures are saved as fixations.csv, saccades.csv, pursuits.csv and blinks.csv
 
 # How to use
 Make sure the right packages are installed in your environment:
