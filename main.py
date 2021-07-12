@@ -17,22 +17,22 @@ printresults    = True      # show results of the detection in the console
 # Import csv files --------------------------------------------------------------------------------------------------
 datapath        = os.getcwd() + "/testdata/"    # put the full path to your data here
 participants    = 2                             # number of participants
-trails          = 2                             # trails per participant
+trials          = 2                             # trials per participant
 filename        = 'varjo_gaze_output'           # looks for files with this string in the name
 
 for participant in range(1, participants + 1):
     print(), print(), print('Analyisis results for participant {}'.format(participant))
     #start plot
-    fig, axs = plt.subplots(trails, figsize=[25.60, 7.20*trails])
-    fig.suptitle('Detection per trail for participant {}'.format(participant))
+    fig, axs = plt.subplots(trials, figsize=[25.60, 7.20*trials])
+    fig.suptitle('Detection per trial for participant {}'.format(participant))
 
-    for trail in range(1, trails + 1):
-        trailpath = datapath + '{}/{}/'.format(participant,trail)
+    for trial in range(1, trials + 1):
+        trialpath = datapath + '{}/{}/'.format(participant,trial)
 
-        print(), print('Trail ' + str(trail))
-        gazedata  = readers.Gaze(datapath, participant, trail, filename)
-        pupildata = readers.Pupil(datapath, participant, trail, filename)
-        focusdata = readers.Focus(datapath, participant, trail, filename)
+        print(), print('Trial ' + str(trial))
+        gazedata  = readers.Gaze(datapath, participant, trial, filename)
+        pupildata = readers.Pupil(datapath, participant, trial, filename)
+        focusdata = readers.Focus(datapath, participant, trial, filename)
 
 # classify gaze events ----------------------------------------------------------------------------------------------
         classifiedgazedata = run_detection.DetectGazeEvents(gazedata, debugdetection)
@@ -54,7 +54,7 @@ for participant in range(1, participants + 1):
 
 # Saving gaze event data ---------------------------------------------------------------------------------------------
         if savedata:
-            outputpath = trailpath + 'detection'
+            outputpath = trialpath + 'detection'
             Path(outputpath).mkdir(parents=True, exist_ok=True)
             # save detections per even type with their measures
             functions.save_events(Fixations, 'fixations.csv', outputpath)
@@ -62,14 +62,14 @@ for participant in range(1, participants + 1):
             functions.save_events(Persuits, 'persuits.csv', outputpath)
             functions.save_events(Blinks, 'blinks.csv', outputpath)
             # add gaze_event classification column to raw data and save copy
-            csvdata = readers.file_reader(datapath, participant, trail, filename)
+            csvdata = readers.file_reader(datapath, participant, trial, filename)
             csvdata["gaze_event"] = classifiedgazedata['data']['EYE_MOVEMENT_TYPE']
             csvdata.to_csv(outputpath + "/classified_data.csv")
 
 # Plotting and saving------------------------------------------------------------------------------------------------
-        plotters.detection(x, y, t, v, Fixations, Saccades, Persuits, Blinks, trails, trail, axs)
-        plotters.calculation(Fixations, Saccades, Persuits, Blinks, trail, participant)
-        outputpath = trailpath + "calculation-p{}-t{}.png".format(participant, trail, participant, trail)
+        plotters.detection(x, y, t, v, Fixations, Saccades, Persuits, Blinks, trials, trial, axs)
+        plotters.calculation(Fixations, Saccades, Persuits, Blinks, trial, participant)
+        outputpath = trialpath + "calculation-p{}-t{}.png".format(participant, trial, participant, trial)
         if savefig: plt.savefig(outputpath, bbox_inches='tight')
 
     plt.figure(1)

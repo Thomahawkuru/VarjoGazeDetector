@@ -42,8 +42,8 @@ Both methods produce a .csv with eye-tracking data, which VarjoGazeDetector can 
 Only Varjo Base recording produces a video capture automatically. 
 When Varjo Base is used, the detections are matched with the time of the video.
 
-The tool is set up to assume a folder structure based on research participants with a certain number of trails each.
-Make sure the folder structure is participant/trail as follows, if you would like to use the tool as is. Both recording methods can be mixed. 
+The tool is set up to assume a folder structure based on research participants with a certain number of trials each.
+Make sure the folder structure is participant/trial as follows, if you would like to use the tool as is. Both recording methods can be mixed. 
 
     data_folder/
         1/
@@ -64,7 +64,7 @@ Make sure the folder structure is participant/trail as follows, if you would lik
             2/
                 varjo_gaze_output_XX-XX-XXXX.csv
 
-The detection results are saved in a 'detection' folder in each trail folder. 
+The detection results are saved in a 'detection' folder in each trial folder. 
 Detection and their measures are saved as fixations.csv, saccades.csv, persuits.csv and blinks.csv
 
 # How to use
@@ -82,11 +82,11 @@ savefig         = False     # whether or not the plot figures are saved after de
 debugdetection  = False     # show runtime info about the detection in the console
 printresults    = True      # show results of the detection in the console
 ```
-Also in main.py you have to give the path to the data folder, and specify the participants and trails
+Also in main.py you have to give the path to the data folder, and specify the participants and trials
 ```python
 datapath        = 'C:/path_to_data'             # put the full path to your data here
 participants    = 2                             # number of participants
-trails          = 2                             # trails per participant
+trials          = 2                             # trials per participant
 filename        = 'varjo_gaze_output'           # looks for files with this string in the name
 ```
 

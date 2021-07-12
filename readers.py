@@ -5,9 +5,9 @@ import functions
 import numpy as np
 
 
-def file_reader(path, participant, trail, filename):
+def file_reader(path, participant, trial, filename):
     # read data file
-    path = path + str(participant) + "/" + str(trail) + "/"
+    path = path + str(participant) + "/" + str(trial) + "/"
     file = [i for i in os.listdir(path) if os.path.isfile(os.path.join(path, i)) and \
             filename in i]
 
@@ -15,10 +15,10 @@ def file_reader(path, participant, trail, filename):
 
     return csvdata
 
-def Gaze(path, participant, trail, filename):
+def Gaze(path, participant, trial, filename):
 
-    gazeData = file_reader(path, participant, trail, filename)
-    fname = "P" + str(participant) + "_T" + str(trail)
+    gazeData = file_reader(path, participant, trial, filename)
+    fname = "P" + str(participant) + "_T" + str(trial)
 
     # Raw Gaze data
     s = np.array(gazeData['status'])
@@ -44,18 +44,18 @@ def Gaze(path, participant, trail, filename):
 
     return gaze_points
 
-def Pupil(path, participant, trail, filename):
+def Pupil(path, participant, trial, filename):
 
-    gazeData = file_reader(path, participant, trail, filename)
+    gazeData = file_reader(path, participant, trial, filename)
 
     left = np.array(gazeData['left_pupil_size'])
     right = np.array(gazeData['right_pupil_size'])
 
     return left, right
 
-def Focus(path, participant, trail, filename):
+def Focus(path, participant, trial, filename):
 
-    gazeData = file_reader(path, participant, trail, filename)
+    gazeData = file_reader(path, participant, trial, filename)
     focus = np.array(gazeData['focus_distance'])
 
     return focus

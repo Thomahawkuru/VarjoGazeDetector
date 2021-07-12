@@ -7,12 +7,12 @@ from scipy.stats import norm
 Functions for helping with plotting of various figures and data
 """
 
-def detection(x, y, t, v, fixations, saccades, persuits, blinks, trails, trail, axs):
-    if trails > 1:
-        axs1 = axs[trail - 1]
+def detection(x, y, t, v, fixations, saccades, persuits, blinks, trials, trial, axs):
+    if trials > 1:
+        axs1 = axs[trial - 1]
     else:
         axs1 = axs
-    axs1.set_title('Trail ' + str(trail))
+    axs1.set_title('Trial ' + str(trial))
     axs1.set_xlabel('Time [s]')
 
     axs1.plot(t, v, 'silver', label="Velocity")
@@ -37,8 +37,8 @@ def detection(x, y, t, v, fixations, saccades, persuits, blinks, trails, trail, 
     axs1.legend(loc='upper left')
     axs2.legend(loc='upper right')
 
-def calculation(fixations, saccades, persuits, blinks, trail, participant):
-    plt.figure(trail + 1, figsize=[25.60, 14.40])
+def calculation(fixations, saccades, persuits, blinks, trial, participant):
+    plt.figure(trial + 1, figsize=[25.60, 14.40])
     plt.subplot(4, 4, 1)
     histogramreighley(fixations[:, 2])
     plt.title("Fixation duration")
