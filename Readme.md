@@ -97,7 +97,7 @@ filename        = 'varjo_gaze_output'           # looks for files with this stri
 The parameters for detection are specified in run_detection.py. 
 
 # Contents
-### Main scripts
+#### Main scripts
 
 File          | Description
 ------------- | -------------
@@ -108,7 +108,7 @@ blink_detector.py	   | Function that identifies blinks based on previous knowled
 fixation_detector.py   | Function that detects fixations based on previous knowledge of saccades and blinks. But also looks ahead to possibility of smooth pursuit 
 sp_detector		       | Class object that detects pursuits.
 
-###Helper functions
+#### Helper functions
 File          | Description
 ------------- | -------------
 arff_helper.py		|Class object that assists in handling arff objects containing the data
@@ -117,7 +117,7 @@ plotters.py		    |file containing functions specific to plotting the detection d
 readers.py		    |file containing functions specific to reading data from varjo .csv files
 calculators.py		|file containing functions specific to calculating measures of gaze events
 
-###Other files
+#### Other files
 File          | Description
 ------------- | -------------
 /Unity/EyeTracking.cs		|C# script taking user settings and input
