@@ -120,10 +120,9 @@ calculators.py		|file containing functions specific to calculating measures of g
 ###Other files
 File          | Description
 ------------- | -------------
-/Unity					|folder containing Unity assets for data recording
-- EyeTracking.cs		|	- C# script taking user settings and input
-- Eye_Tracking.prefab	|	- Unity objects to attach to script
-/testdata				|folder with varjo recordings to run as example
-.gitignore				|file containing which files to ignore for github
-LICENSE				    |gnu general public licence 3.0
-Readme.md				|contains introduction and description of the project
+/Unity/EyeTracking.cs		|C# script taking user settings and input
+/Unity/Eye_Tracking.prefab	|Unity objects to attach to script
+/testdata			    	|folder with varjo recordings to run as example
+.gitignore				    |file containing which files to ignore for github
+LICENSE				        |gnu general public licence 3.0
+Readme.md			    	|contains introduction and description of the project
