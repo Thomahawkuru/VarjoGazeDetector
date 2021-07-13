@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 from arff_helper import ArffHelper
 from collections import OrderedDict
 
@@ -107,22 +108,23 @@ def get_xy_moving_average(data, window_size, inplace=False):
             data[column][:] = res
     return data
 
-def fill_blink_gaps(Tx, Ty, t, s):
+def fill_blink_gaps(data):
     """
     Find gaps in the data that represent blinks, for recordings with Varjo Base.
 
     In Unity recording, a blink period is recorded with zeros. This is how blinks are detected.
     Varjo base does not record any data during a blink, so instead a jump in time-interval is found.
-    This funcition detects those gaps in the data and fills them with zero arrays for blink detection.
+    This function detects those gaps in the data and fills them with zero arrays for blink detection.
 
-    :param Tx: numpy array with 'x' data in deg
-    :param Ty: numpy array with 'y' data in deg
-    :param t: numpy array with timestamps
-    :param s: numpy array with gaze tatus
+    :param data: gazedata read from the .csv
 
-    :return: data set Tx, Ty, t, s with added interpolations where blinks occured
+    :return: patched data set with added interpolations where blinks occured
 
     """
+    t = data['raw_timestamp'] / 10 ** 6
+    t = np.array(t - t[0])
+    s = data['status']
+
     # find blinks for Varjo base recording by gaps in time array
     dt = np.diff(t)
     blink_onsets = np.nonzero(dt > 30)[0]
@@ -134,25 +136,33 @@ def fill_blink_gaps(Tx, Ty, t, s):
         for onset, offset in zip(blink_onsets, blink_offsets):
             onset  += shift
             offset += shift
-
+            t = data['raw_timestamp'] / 10 ** 6
+            t = np.array(t - t[0])
             gaptime = t[offset] - t[onset]
             npoints = int(gaptime/dt.mean())
 
-            # create patches
-            timepatch  = np.linspace(t[onset], t[offset], npoints+2)
-            timepatch = timepatch[1:-1]
-            datapatch  = np.zeros(npoints)
+            # create patch
+            datapatch  = pd.DataFrame(np.zeros([npoints, len(data.columns)]), columns=data.columns)
 
-            # append the patches in the data arrays
-            t  = np.insert(t,  onset+1, timepatch)
-            Tx = np.insert(Tx, onset+1, datapatch)
-            Ty = np.insert(Ty, onset+1, datapatch)
-            s  = np.insert(s,  onset+1, datapatch)
-
+            # append the patches in the data arrays            data[:onset+1].append()
+            past_data = data[:(onset+1)]
+            future_data = data[offset:]
+            inserted_data = past_data.append(datapatch, ignore_index=True)
+            data = inserted_data.append(future_data, ignore_index=True)
             # shift indexes with patch length
             shift += npoints
 
-    return Tx, Ty, t, s
+        # fix time vector by replacing zeros with NaN and interpolating
+        raw_times = data['raw_timestamp']
+        raw_times[raw_times==0] = np.nan
+        data['raw_timestamp'] = raw_times.interpolate()
+
+        if 'relative_to_video_first_frame_timestamp' in data.columns:
+            raw_video_times = data['relative_to_video_first_frame_timestamp']
+            raw_video_times[raw_video_times == 0] = np.nan
+            data['relative_to_video_first_frame_timestamp'] = raw_video_times.interpolate()
+
+    return data
 
 def save_events(data, fname, datapath):
     """
@@ -166,7 +176,7 @@ def save_events(data, fname, datapath):
 
     """
     allnames = ["t_start", 't_end', 'duration', 'x_start', 'y_start', 'x_end', 'y_end', 'amplitude', 'mean_vel', 'max_vel']
-    names = allnames[0:len(data[1, :])]
+    names = allnames[0:len(data[0, :])]
     delimiter = ','
     header = delimiter.join(names)
 
