@@ -1,6 +1,8 @@
 # Varjo Gaze Detector
 
-Varjo Gaze Detector classifies gaze events in eye-tracking recordings from the Varjo VR and XR headsets. It detects fixations, saccades, smooth pursuits and blinks. As well as their duration, amplituded and mean/max velocities. 
+Varjo Gaze Detector classifies gaze events in eye-tracking recordings from the Varjo VR and XR headsets. 
+It detects fixations, saccades, smooth pursuits and blinks. As well as their duration, amplituded and mean/max velocities.
+Detection is done using the gaze vector within the frame of reference.  
 This tool is developed by Thomas de Boer, with use of the detection algorithm from [sp_tool](https://github.com/MikhailStartsev/sp_tool) by Mikhail Startsev. Please cite their paper when using this code:
 
     @inproceedings{agtzidis2016smooth,
@@ -40,9 +42,11 @@ VarjoGazeDetector works with two methods of recording eye-tracking data.
 
 Both methods produce a .csv with eye-tracking data, which VarjoGazeDetector can process. 
 Only Varjo Base recording produces a video capture automatically. 
-When Varjo Base is used, the detections are matched with the time of the video.
+When Varjo Base is used, the detections are matched with the video timeline.
+Recording from Unity with the provide assets also records headset position and rotation. 
+If needed, the script can be expanded to record various other measures within Unity.
 
-The tool is set up to assume a folder structure based on research participants with a certain number of trials each.
+VarjoGazeDetecor is set up to assume a folder structure based on research participants with a certain number of trials each.
 Make sure the folder structure is participant/trial as follows, if you would like to use the tool as is. Both recording methods can be mixed. 
 
     data_folder/
@@ -91,3 +95,35 @@ filename        = 'varjo_gaze_output'           # looks for files with this stri
 ```
 
 The parameters for detection are specified in run_detection.py. 
+
+# Contents
+### Main scripts
+
+File          | Description
+------------- | -------------
+main.py		           |Detection is by running this file. User can give input within. 
+run_detection.py	   |This calls the gaze event detectors. Users can tune parameters here.
+saccade_detector	   | Function that detects saccades and identifies glitches
+blink_detector.py	   | Function that identifies blinks based on previous knowledge of saccades
+fixation_detector.py   | Function that detects fixations based on previous knowledge of saccades and blinks. But also looks ahead to possibility of smooth pursuit 
+sp_detector		       | Class object that detects pursuits.
+
+###Helper functions
+File          | Description
+------------- | -------------
+arff_helper.py		|Class object that assists in handling arff objects containing the data
+functions.py		|file containing various helper functions used during detection
+plotters.py		    |file containing functions specific to plotting the detection data
+readers.py		    |file containing functions specific to reading data from varjo .csv files
+calculators.py		|file containing functions specific to calculating measures of gaze events
+
+###Other files
+File          | Description
+------------- | -------------
+/Unity					|folder containing Unity assets for data recording
+- EyeTracking.cs		|	- C# script taking user settings and input
+- Eye_Tracking.prefab	|	- Unity objects to attach to script
+/testdata				|folder with varjo recordings to run as example
+.gitignore				|file containing which files to ignore for github
+LICENSE				    |gnu general public licence 3.0
+Readme.md				|contains introduction and description of the project
