@@ -7,12 +7,14 @@ from scipy.stats import norm
 Functions for helping with plotting of various figures and data
 """
 
-def detection(x, y, t, v, fixations, saccades, pursuits, blinks, trials, trial, axs):
+def detection(x, y, t, v, fixations, saccades, pursuits, blinks, trials, trial, axs, hz):
     if trials > 1:
         axs1 = axs[trial - 1]
     else:
         axs1 = axs
-    axs1.set_title('Trial ' + str(trial))
+
+    hz = round(hz)
+    axs1.set_title('Trial {}, recorded at {}hz'.format(trial,hz))
     axs1.set_xlabel('Time [s]')
 
     axs1.plot(t, v, 'silver', label="Velocity")
@@ -39,7 +41,7 @@ def detection(x, y, t, v, fixations, saccades, pursuits, blinks, trials, trial, 
 
 def calculation(fixations, saccades, pursuits, blinks, trial, participant):
     plt.figure(trial + 1, figsize=[25.60, 14.40])
-
+    plt.suptitle('Gaze event analysis for participant {}, trail {}'.format(participant, trial))
     if fixations.any():
         plt.subplot(4, 4, 1)
         histogramreighley(fixations[:, 2])
