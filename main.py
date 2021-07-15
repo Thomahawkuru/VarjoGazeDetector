@@ -42,8 +42,8 @@ for participant in range(1, participants + 1):
         v = classifiedgazedata['data']['v']                     # [deg/s]
         e = classifiedgazedata['data']['EYE_MOVEMENT_TYPE']     # ('UNKNOWN', 'FIX', 'SACCADE', 'SP', 'NOISE', 'BLINK', 'NOISE_CLUSTER', 'PSO')
 
-        dt = 1000 / np.mean(np.diff(classifiedgazedata['data']['time']))
-        print("Gaze data recorded at: {} Hz".format(dt))
+        hz = 1000 / np.mean(np.diff(classifiedgazedata['data']['time']))
+        print("Gaze data recorded at: {} Hz".format(hz))
 
 # Analyzing gaze event measures --------------------------------------------------------------------------------------
         Fixations = calculators.fixation(x, y, t, e, printresults)
@@ -67,7 +67,7 @@ for participant in range(1, participants + 1):
             csvdata.to_csv(outputpath + "/classified_data.csv")
 
 # Plotting and saving------------------------------------------------------------------------------------------------
-        plotters.detection(x, y, t, v, Fixations, Saccades, Pursuits, Blinks, trials, trial, axs)
+        plotters.detection(x, y, t, v, Fixations, Saccades, Pursuits, Blinks, trials, trial, axs, hz)
         plotters.calculation(Fixations, Saccades, Pursuits, Blinks, trial, participant)
         outputpath = trialpath + "calculation-p{}-t{}.png".format(participant, trial, participant, trial)
         if savefig: plt.savefig(outputpath, bbox_inches='tight')
