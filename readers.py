@@ -7,13 +7,16 @@ import numpy as np
 
 def file_reader(path, participant, trial, filename):
     # read data file
+    path = path + str(participant) + "/" + str(trial) + "/"
     file = [i for i in os.listdir(path) if os.path.isfile(os.path.join(path, i)) and \
             filename in i]
     csvdata = pandas.read_csv(path + file[0], delimiter=',')
 
     # remove last row (can be partially logged) and replace nan values
     csvdata.drop(csvdata.tail(1).index,inplace=True)
-    csvdata.dropna(subset=["Time"], inplace=True)
+    csvdata.dropna(subset=["raw_timestamp"], inplace=True)
+    if 'relative_to_video_first_frame_timestamp' in csvdata.columns:
+        csvdata.dropna(subset=["relative_to_video_first_frame_timestamp"], inplace=True)
     csvdata = csvdata.fillna(0)
 
     # interpolate missing gaps in the data that represent Blinks (for Varjo Base recordings)
