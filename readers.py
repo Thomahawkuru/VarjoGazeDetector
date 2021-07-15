@@ -12,6 +12,11 @@ def file_reader(path, participant, trial, filename):
             filename in i]
     csvdata = pandas.read_csv(path + file[0], delimiter=',')
 
+    # remove last row (can be partially logged) and replace nan values
+    csvdata.drop(csvdata.tail(1).index,inplace=True)
+    csvdata.dropna(subset=["Time"], inplace=True)
+    csvdata = csvdata.fillna(0)
+
     # interpolate missing gaps in the data that represent Blinks (for Varjo Base recordings)
     patched_data = functions.fill_blink_gaps(csvdata)
 
