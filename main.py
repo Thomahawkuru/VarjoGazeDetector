@@ -30,7 +30,7 @@ for participant in range(1, participants + 1):
         trialpath = datapath + '{}/{}/'.format(participant,trial)
 
         print(), print('Trial ' + str(trial))
-        csvdata  = readers.file_reader(datapath, participant, trial, filename)
+        csvdata  = readers.file_reader(trialpath, participant, trial, filename)
         gazedata = readers.gaze_arff(csvdata)
 
 # classify gaze events ----------------------------------------------------------------------------------------------
